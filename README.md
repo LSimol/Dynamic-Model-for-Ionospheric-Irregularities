@@ -23,3 +23,12 @@ An example on how to get and plot the outputs of the model is provided in the ex
 
 This repository is **currently in the development phase (alpha version)** and will be continuously improved.
 Feel free to contribute by submitting issues, feature requests, or pull requests
+
+## Data Availability
+The pre-processed data (`.npy` grids) required to run the model are available on Zenodo.
+
+[![DOI](https://zenodo.org/records/18327152/files/data_Ne(6).zip?download=1)
+
+**Usage:**
+1. Download the `processed_data.zip` file from the link above.
+2. Extract the contents directly into the `data/processed/` folder.
