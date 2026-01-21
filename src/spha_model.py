@@ -21,6 +21,7 @@ class SPHAModel:
                 # Handle cell arrays (list of values in a bin)
                 cell_vals = data_copy[i][j] if hasattr(data_copy[i][j], '__iter__') else data_copy[i,j]
                 
+                # Skip if empty or NaN
                 if np.all(np.isnan(cell_vals)):
                     continue
                     
@@ -28,13 +29,47 @@ class SPHAModel:
                 mad = sigma * np.nanmedian(np.abs(cell_vals - median))
                 
                 # Filter: keep values within median +/- mad
-                # Note: Logic adapted for array-based approach; simplified for clarity
-                # In full implementation, this should mask outliers in the raw bin lists
-        return data_copy
+                # Ideally, we return the mean of the filtered values for the map
+                valid_indices = np.where((cell_vals >= median - mad) & (cell_vals <= median + mad))
+                filtered_vals = cell_vals[valid_indices]
+                
+                if len(filtered_vals) > 0:
+                    data_copy[i, j] = np.mean(filtered_vals)
+                else:
+                    data_copy[i, j] = np.nan
+                    
+        return data_copy.astype(float)
+
+    def grid_to_healpix(self, lat_grid, lon_grid, data_grid):
+        """
+        Convert a Lat/Lon grid to a Healpix map.
+        """
+        hp_map = np.full(hp.nside2npix(self.nside), np.nan, dtype=np.double)
+        
+        # Create pixel indices for the grid coordinates
+        # lat_grid is 1D array of latitudes, lon_grid is 1D array of longitudes
+        # data_grid is 2D array (lat, lon)
+        
+        # We iterate over the grid and fill the corresponding Healpix pixels
+        # Note: This is a simple nearest-neighbor mapping for demonstration.
+        # For high-res grids, multiple grid points might map to one pixel (averaging needed)
+        
+        for i, lat in enumerate(lat_grid):
+            for j, lon in enumerate(lon_grid):
+                val = data_grid[i, j]
+                if not np.isnan(val):
+                    # Convert Lat/Lon to colatitude/longitude in radians
+                    theta = np.radians(90 - lat)
+                    phi = np.radians(lon)
+                    
+                    pix_idx = hp.ang2pix(self.nside, theta, phi)
+                    hp_map[pix_idx] = val
+                 
+        return hp_map
 
     def compute_coeffs(self, hp_map):
         """Compute spherical harmonic coefficients (alm) and power spectrum (cln)."""
-        # Ensure map is valid (handle NaNs with simple mean imputation for SPHA stability)
+        # Ensure map is valid (handle NaNs with mean imputation)
         mask = np.isnan(hp_map)
         if np.any(mask):
             hp_map[mask] = np.nanmean(hp_map)
@@ -52,16 +87,7 @@ class SPHAModel:
         """
         Interpolate Spherical Harmonic coefficients based on Solar Activity (SA)
         and Clock Angle (CA).
-        
-        Parameters:
-        - alm_dict: Nested dictionary [SA][Season][CA] -> alm_array
-        - sa_input: Solar Activity value (F10.7)
-        - ca_input: Clock Angle value (radians)
-        - season_input: 'Summer', 'Equinox', or 'Winter'
-        - sa_levels: Dict mapping labels to values, e.g., {'LSA': 70, ...}
-        - ca_levels: Dict mapping labels to radians, e.g., {'UR': 0.52, ...}
         """
-        
         solar_activities = list(sa_levels.values())
         clock_angles = list(ca_levels.values())
         
@@ -76,11 +102,8 @@ class SPHAModel:
         sorted_keys = list(ca_levels.keys()) + [list(ca_levels.keys())[0]]
 
         # Find CA neighbors
-        # We use standard numpy searchsorted to find where our angle fits
-        # We normalize ca_input to 0-2pi if necessary in a real scenario
         idx_upper = np.searchsorted(sorted_angles, ca_input)
         
-        # Safety for boundary conditions (though circular logic usually handles this)
         if idx_upper == 0: idx_upper = 1
         if idx_upper >= len(sorted_angles): idx_upper = len(sorted_angles) - 1
 
@@ -97,13 +120,11 @@ class SPHAModel:
             coef_upper = alm_dict[sa_tag][season_input][ca_upper_tag]
             coef_lower = alm_dict[sa_tag][season_input][ca_lower_tag]
 
-            # Interpolate between angles
             interp_func = interp1d([ca_lower, ca_upper], np.vstack([coef_lower, coef_upper]), axis=0, kind='linear', fill_value='extrapolate')
             return interp_func(ca_input)
 
         # 3. Full Interpolation (Both Solar Activity and Clock Angle)
         else:
-            # Find SA neighbors
             if sa_input > max(solar_activities):
                 sa_upper = sorted(solar_activities)[-1]
                 sa_lower = sorted(solar_activities)[-2]
@@ -117,22 +138,14 @@ class SPHAModel:
             sa_upper_tag = next(k for k, v in sa_levels.items() if v == sa_upper)
             sa_lower_tag = next(k for k, v in sa_levels.items() if v == sa_lower)
 
-            # Retrieve the 4 corners of our interpolation square
-            # Upper SA (High F10.7)
-            coef_uu = alm_dict[sa_upper_tag][season_input][ca_upper_tag] # Upper SA, Upper Angle
-            coef_ul = alm_dict[sa_upper_tag][season_input][ca_lower_tag] # Upper SA, Lower Angle
-            
-            # Lower SA (Low F10.7)
-            coef_lu = alm_dict[sa_lower_tag][season_input][ca_upper_tag] # Lower SA, Upper Angle
-            coef_ll = alm_dict[sa_lower_tag][season_input][ca_lower_tag] # Lower SA, Lower Angle
+            coef_uu = alm_dict[sa_upper_tag][season_input][ca_upper_tag]
+            coef_ul = alm_dict[sa_upper_tag][season_input][ca_lower_tag]
+            coef_lu = alm_dict[sa_lower_tag][season_input][ca_upper_tag]
+            coef_ll = alm_dict[sa_lower_tag][season_input][ca_lower_tag]
 
-            # Step A: Interpolate Angles for Lower SA
             interp_sa_lower = interp1d([ca_lower, ca_upper], np.vstack([coef_ll, coef_lu]), axis=0, kind='linear', fill_value='extrapolate')(ca_input)
-            
-            # Step B: Interpolate Angles for Upper SA
             interp_sa_upper = interp1d([ca_lower, ca_upper], np.vstack([coef_ul, coef_uu]), axis=0, kind='linear', fill_value='extrapolate')(ca_input)
 
-            # Step C: Interpolate between Solar Activities
             final_interp = interp1d([sa_lower, sa_upper], np.vstack([interp_sa_lower, interp_sa_upper]), axis=0, kind='linear', fill_value='extrapolate')(sa_input)
 
             return final_interp
