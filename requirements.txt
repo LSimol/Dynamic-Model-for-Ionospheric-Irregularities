@@ -1,0 +1,9 @@
+numpy
+pandas
+matplotlib
+scipy
+healpy
+numba
+tqdm
+seaborn
+
