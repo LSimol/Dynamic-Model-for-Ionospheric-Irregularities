@@ -5,8 +5,8 @@ import shutil
 import sys
 
 # --- CONFIGURATION ---
-# TODO: Update this link with real one
-DATA_URL = "https://zenodo.org/record/YOUR_RECORD_ID/files/processed_data.zip?download=1"
+# Note: If this fails with 404, change 'data_Ne(6).zip' to 'data_Ne%286%29.zip'
+DATA_URL = "https://zenodo.org/records/18327152/files/data_Ne(6).zip?download=1"
 DESTINATION = "./data/processed"
 
 def download_and_extract():
