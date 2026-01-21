@@ -53,7 +53,7 @@ def generate_model_coefficients(satellite='A'):
             for ca in CLOCK_ANGLES.keys():
                 # Construct filename pattern (Adjust to match your actual save format)
                 # Example from notebook: data_ne_Swarm_A_LSA_Summer_UR.npy
-                filename = f"filtered_data_ne_Swarm_{satellite}_{sa}_{season}_{ca}.npy"
+                filename = f"data_ne_Swarm_{satellite}_{sa}_{season}_{ca}.npy"
                 filepath = os.path.join(PROCESSED_DATA_PATH, filename)
                 
                 if not os.path.exists(filepath):
