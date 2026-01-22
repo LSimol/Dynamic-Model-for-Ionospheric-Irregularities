@@ -30,17 +30,3 @@ The pre-processed data (`.npy` grids) required to run the model are available on
 **Usage:**
 1. Download the `processed_data.zip` file from the link above.
 2. Extract the contents directly into the `data/processed/` folder.
-
-## Repository Structure
-
-```text
-├── data/                   # Data storage (ignored by git)
-├── models/                 # Generated SPHA coefficients (.pkl)
-├── src/                    # Core source code
-│   ├── spha_model.py       # SPHA math & interpolation logic
-│   ├── visualization.py    # Polar plotting tools
-│   └── config.py           # Physical constants & grid settings
-├── download_data.py        # Script to fetch input data from Zenodo
-├── main_model.py           # Script to train the model
-├── example.py              # Script to run inference & plot results
-└── requirements.txt        # Python dependencies
