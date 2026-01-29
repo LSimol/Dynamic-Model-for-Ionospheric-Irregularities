@@ -11,7 +11,7 @@ This model is based on **spherical harmonic decomposition** and provides statist
    
 The model operates under user-specified conditions for solar activity levels, local seasons, and IMF orientations.
 
-Further details regarding the model and its performance can be found in **Mestici et al., 2025 (submitted)**. Citation details will be updated upon publication.
+Further details regarding the model and its performance can be found in **Mestici et al., 2026 (Accepted)**. Citation details will be updated upon publication.
 
 ### Usage
 
