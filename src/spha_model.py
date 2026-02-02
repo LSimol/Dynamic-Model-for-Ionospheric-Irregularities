@@ -105,8 +105,28 @@ class SPHAModel:
         cln = hp.anafast(hp_map, lmax=self.lmax)
         return alm, cln
 
-    def reconstruct_map(self, alm):
-        return hp.alm2map(alm, nside=self.nside, lmax=self.lmax, mmax=self.mmax)
+def reconstruct_map(self, alm, custom_lmax=None):
+        """
+        Reconstruct map from alm coefficients.
+        If custom_lmax is provided, filter out higher-degree coefficients
+        while preserving the array size, preventing 'Wrong alm size' errors.
+        """
+        # If no custom L is set, or it's higher than the model's native resolution
+        if custom_lmax is None or int(custom_lmax) >= self.lmax:
+            return hp.alm2map(alm, nside=self.nside, lmax=self.lmax, mmax=self.mmax)
+        
+        # If custom L is lower, we create a "Step Filter"
+        # 1.0 for l <= custom_l, 0.0 for l > custom_l
+        l_cutoff = int(custom_lmax)
+        fl = np.zeros(self.lmax + 1)
+        fl[:l_cutoff + 1] = 1.0
+        
+        # Apply the filter (Multiplies Alm by the window function)
+        alm_filtered = hp.almxfl(alm, fl)
+        
+        # Reconstruct using the ORIGINAL lmax dimensions (so Healpy is happy)
+        # but the high-frequency data is now effectively zero.
+        return hp.alm2map(alm_filtered, nside=self.nside, lmax=self.lmax, mmax=self.mmax)
 
     def interpolate_coefficients(self, alm_dict, sa_input, ca_input, season_input, sa_levels, ca_levels):
         # ... (Identical to previous correct version) ...
