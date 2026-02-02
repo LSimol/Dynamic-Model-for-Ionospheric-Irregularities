@@ -14,10 +14,33 @@ from src.config import NSIDE
 MODEL_DIR = "./models"
 SATELLITE = "A"
 
-# Interpolation Inputs
-SOLAR_ACTIVITY_INPUT = 127
-CLOCK_ANGLE_INPUT = np.radians(139)
-SEASON_INPUT = 'Equinox'
+def get_user_inputs():
+    print("\n--- Model Configuration ---")
+    
+    # 1. Solar Activity
+    try:
+        sa_str = input("Enter Solar Activity (F10.7 index, e.g., 100): ")
+        sa_input = float(sa_str)
+    except ValueError:
+        print("Invalid number. Defaulting to 100.")
+        sa_input = 127.0
+
+    # 2. Clock Angle
+    try:
+        ca_str = input("Enter IMF Clock Angle (in degrees 0-360, e.g., 139): ")
+        # Convert degrees to radians immediately
+        ca_input = np.radians(float(ca_str))
+    except ValueError:
+        print("Invalid number. Defaulting to 139°.")
+        ca_input = np.radians(139)
+
+    # 3. Season
+    season_input = input("Enter Season (Summer, Winter, Equinox): ").strip().capitalize()
+    if season_input not in ['Summer', 'Winter', 'Equinox']:
+        print(f"'{season_input}' is not valid. Defaulting to 'Equinox'.")
+        season_input = 'Equinox'
+        
+    return sa_input, ca_input, season_input
 
 # Interpolation Reference Levels (from src/config.py or defined here)
 SA_LEVELS = {'LSA': 70, 'MSA': 84, 'HSA': 133}
@@ -49,8 +72,11 @@ def main():
         print("Stopping due to missing models. Please run main_model.py first.")
         return
 
-    # 2. Interpolate & Reconstruct Maps
-    print(f"--- Interpolating Conditions: SA={SOLAR_ACTIVITY_INPUT}, CA={np.degrees(CLOCK_ANGLE_INPUT):.0f}°, Season={SEASON_INPUT} ---")
+    # Get Inputs
+    SOLAR_ACTIVITY_INPUT, CLOCK_ANGLE_INPUT, SEASON_INPUT = get_user_inputs()
+
+    # 2. Load All Models
+    print(f"\n--- Loading Models for {SEASON_INPUT}, F10.7={SOLAR_ACTIVITY_INPUT}, CA={np.degrees(CLOCK_ANGLE_INPUT):.0f}° ---")
     
     spha = SPHAModel(nside=NSIDE)
     maps = {}
