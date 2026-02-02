@@ -14,6 +14,14 @@ from src.config import NSIDE
 MODEL_DIR = "./models"
 SATELLITE = "A"
 
+# Interpolation Reference Levels (from src/config.py or defined here)
+SA_LEVELS = {'LSA': 70, 'MSA': 84, 'HSA': 133}
+CA_LEVELS = {
+    'UR': np.radians(30), 'R': np.radians(90), 'BR': np.radians(150),
+    'B': np.radians(210), 'BL': np.radians(270), 'L': np.radians(330)
+}
+
+
 def get_user_inputs():
     print("\n--- Model Configuration ---")
     
@@ -40,14 +48,27 @@ def get_user_inputs():
         print(f"'{season_input}' is not valid. Defaulting to 'Equinox'.")
         season_input = 'Equinox'
         
-    return sa_input, ca_input, season_input
+    # 4. Custom L (Harmonic Degree)
+    default_l = NSIDE * 2
+    l_input = None
+    while True:
+        l_str = input(f"Enter Max Harmonic Degree 'L' (Press Enter for default {default_l}): ").strip()
+        if l_str == "":
+            l_input = None # Use model default
+            print(f"   -> Using default L={default_l}")
+            break
+        try:
+            val = int(l_str)
+            if val > 0:
+                l_input = val
+                break
+            else:
+                print("   [!] L must be positive.")
+        except ValueError:
+            print("   [!] Invalid integer.")
 
-# Interpolation Reference Levels (from src/config.py or defined here)
-SA_LEVELS = {'LSA': 70, 'MSA': 84, 'HSA': 133}
-CA_LEVELS = {
-    'UR': np.radians(30), 'R': np.radians(90), 'BR': np.radians(150),
-    'B': np.radians(210), 'BL': np.radians(270), 'L': np.radians(330)
-}
+    return sa_input, ca_input, season_input, l_input
+
 
 def load_model(var_name):
     """Helper to load a specific model file."""
@@ -73,7 +94,7 @@ def main():
         return
 
     # Get Inputs
-    SOLAR_ACTIVITY_INPUT, CLOCK_ANGLE_INPUT, SEASON_INPUT = get_user_inputs()
+    SOLAR_ACTIVITY_INPUT, CLOCK_ANGLE_INPUT, SEASON_INPUT, CUSTOM_L = get_user_inputs()
 
     # 2. Load All Models
     print(f"\n--- Loading Models for {SEASON_INPUT}, F10.7={SOLAR_ACTIVITY_INPUT}, CA={np.degrees(CLOCK_ANGLE_INPUT):.0f}° ---")
@@ -92,7 +113,7 @@ def main():
             ca_levels=CA_LEVELS
         )
         # Reconstruct Map
-        maps[var_name] = spha.reconstruct_map(interpolated_alm)
+        maps[var_name] = spha.reconstruct_map(interpolated_alm, custom_lmax=CUSTOM_L)
 
     # 3. Plotting Setup
     # We want a grid: 2 Rows (North, South) x 3 Columns (Ne, Gamma, RODI)
