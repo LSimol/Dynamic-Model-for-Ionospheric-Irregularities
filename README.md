@@ -11,14 +11,7 @@ Further details regarding the model and its performance can be found in **Mestic
 
 ## Methodology 
    
-The model utilizes **Spherical Harmonic Analysis** to reconstruct spatial maps of $N_e$, RODI, and $\gamma(2)$ in a Magnetic Local Time (MLT) vs. Magnetic Latitude (MLat) reference frame.
-
-**Input Data**: High-resolution (1 Hz) electron density measurements from the Swarm Langmuir Probes.
-**Conditioning**: Data is binned by:
-i) Solar Activity (F10.7 index): Low, Medium, High;
-ii) Local Season: Summer, Winter, Equinox;
-iii) IMF Clock Angle: 6 sectors ($0^\circ-360^\circ$).
-**Interpolation**: The core innovation of this tool is its ability to linearly interpolate between the spherical harmonic coefficients of adjacent states. This allows the user to generate maps for any specific F10.7 value or Clock Angle, providing a continuous dynamic description rather than just static snapshots.
+The model utilizes Spherical Harmonic Analysis to reconstruct spatial maps of $N_e$, RODI, and $\gamma(2)$ in a Magnetic Local Time (MLT) vs. Magnetic Latitude (MLat) reference frame.Input Data: High-resolution (1 Hz) electron density measurements from the Swarm Langmuir Probes.Conditioning: Data is binned by:Solar Activity (F10.7 index): Low, Medium, High.Local Season: Summer, Winter, Equinox.IMF Clock Angle: 6 sectors ($0^\circ-360^\circ$).Interpolation: The core innovation of this tool is its ability to linearly interpolate between the spherical harmonic coefficients of adjacent states. This allows the user to generate maps for any specific F10.7 value or Clock Angle, providing a continuous dynamic description rather than just static snapshots.
 
 ## Usage Guide
 
