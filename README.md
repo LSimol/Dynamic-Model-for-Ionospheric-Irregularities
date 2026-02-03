@@ -32,16 +32,19 @@ cd Dynamic-Model-for-Ionospheric-Irregularities
 pip install -r requirements.txt
 
 2. **Data Availability**
+
 The model relies on **pre-processed Swarm A data grids** (binned by season, solar activity, and clock angle). These files are hosted on Zenodo to keep the repository light.
+
 **Download the data automatically**: python download_data.py
+
 This script will fetch the dataset (DOI: 10.5281/zenodo.18327152) and extract it into the data/processed/ directory.
 
-3. **Model Initialisation**
+4. **Model Initialisation**
 Run the **main processing script** to compute the Spherical Harmonic coefficients for all variables ($N_e$, RODI, $\gamma$). This step generates the .pkl model files used for inference.
 **Run model**:python main_model.py
 Output: models/alm_dict_Ne_Swarm_A.pkl, models/alm_dict_RODI_Swarm_A.pkl, etc.
 
-4. **Visualization**
+5. **Visualization**
 To generate the climatological maps, run the example script. It is fully interactive and will prompt you for the desired geophysical conditions.
 **Run**: python example.py
 
