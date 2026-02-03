@@ -17,11 +17,11 @@ The model utilizes **Spherical Harmonic Analysis** to reconstruct spatial maps o
 
 **Conditioning**: Data is binned by:
 
-i) Solar Activity (F10.7 index): Low, Medium, High;
+i) **Solar Activity (F10.7 index)**: Low, Medium, High;
 
-ii) Local Season: Summer, Winter, Equinox;
+ii) **Local Season**: Summer, Winter, Equinox;
 
-iii) IMF Clock Angle: 6 sectors ($0^\circ-360^\circ$).
+iii) **IMF Clock Angle**: 6 sectors ($0^\circ-360^\circ$).
 
 **Interpolation**: The core innovation of this tool is its ability to linearly interpolate between the spherical harmonic coefficients of adjacent states. This allows the user to generate maps for any specific F10.7 value or Clock Angle, providing a continuous dynamic description rather than just static snapshots.
 
@@ -38,7 +38,7 @@ pip install -r requirements.txt
 
 1. **Option A**: Quick Run and Inference (recommended)
 
-The repository comes with pre-trained SPHA coefficients located in the models/ directory. Run the visualization and interpolation immediately without downloading the raw dataset.
+The repository comes with **pre-trained SPHA coefficients** located in the models/ directory. Run the visualization and interpolation immediately without downloading the raw dataset.
 
 To generate the climatological maps, run the example script. It is fully interactive and will prompt you for the desired geophysical conditions.
 
@@ -46,15 +46,19 @@ To generate the climatological maps, run the example script. It is fully interac
 
 **Interactive Prompts**:
 
-Solar Activity: Enter an F10.7 index (e.g., 120).
+**Solar Activity**: Enter an F10.7 index (e.g., 120).
 
-Clock Angle: Enter the IMF Clock Angle in degrees (e.g., 90 for Eastward IMF).
+**Clock Angle**: Enter the IMF Clock Angle in degrees (e.g., 90 for Eastward IMF).
 
-Season: Choose Summer, Winter, or Equinox.
+**Local Season**: Choose Summer, Winter, or Equinox.
 
-Resolution: Choose the maximum Spherical Harmonic degree $L$ (e.g., 30 for smoother maps, or press Enter for full resolution).
+**Resolution**: Choose the maximum Spherical Harmonic degree $L$ (e.g., 30 for smoother maps, or press Enter for full resolution).
 
-Output: The script saves a high-resolution figure ''multi_parameter_view.png'' showing the reconstructed maps for both the Northern and Southern Hemispheres.
+**Outputs**: 
+
+i) **Visualization**: A high-resolution figure multi_parameter_view.png showing the reconstructed maps for both Northern and Southern Hemispheres; 
+
+ii) **Data**: A CSV file (e.g., Ne_reconstructed_...csv) containing the model values on a regular **2° x 2°** grid (MLAT vs MLT), suitable for further quantitative analysis.
 
 
 2. **Option B**: Full reproduction
@@ -73,23 +77,10 @@ Run the **main processing script** to compute the Spherical Harmonic coefficient
 
 Output: models/alm_dict_Ne_Swarm_A.pkl, models/alm_dict_RODI_Swarm_A.pkl, etc.
 
-**Visualization**
+**Outputs**
 
-To generate the climatological maps, run the example script. It is fully interactive and will prompt you for the desired geophysical conditions.
+To generate the climatological maps, run the example script as described in Option A.
 
-**Run**: python example.py
-
-**Interactive Prompts**:
-
-Solar Activity: Enter an F10.7 index (e.g., 120).
-
-Clock Angle: Enter the IMF Clock Angle in degrees (e.g., 90 for Eastward IMF).
-
-Season: Choose Summer, Winter, or Equinox.
-
-Resolution: Choose the maximum Spherical Harmonic degree $L$ (e.g., 30 for smoother maps, or press Enter for full resolution).
-
-Output: The script saves a high-resolution figure ''multi_parameter_view.png'' showing the reconstructed maps for both the Northern and Southern Hemispheres.
 
 ### Repository Structure
 
