@@ -31,7 +31,9 @@ iii) IMF Clock Angle: 6 sectors ($0^\circ-360^\circ$).
 Clone the repository and install the required dependencies:
 
 git clone https://github.com/LSimol/Dynamic-Model-for-Ionospheric-Irregularities.git
+
 cd Dynamic-Model-for-Ionospheric-Irregularities
+
 pip install -r requirements.txt
 
 2. **Data Availability**
