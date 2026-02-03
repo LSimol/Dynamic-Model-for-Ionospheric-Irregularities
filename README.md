@@ -54,11 +54,16 @@ To generate the climatological maps, run the example script. It is fully interac
 **Run**: python example.py
 
 **Interactive Prompts**:
+
 Solar Activity: Enter an F10.7 index (e.g., 120).
+
 Clock Angle: Enter the IMF Clock Angle in degrees (e.g., 90 for Eastward IMF).
+
 Season: Choose Summer, Winter, or Equinox.
+
 Resolution: Choose the maximum Spherical Harmonic degree $L$ (e.g., 30 for smoother maps, or press Enter for full resolution).
-Output: The script saves a high-resolution figure multi_parameter_view.png showing the reconstructed maps for both the Northern and Southern Hemispheres.
+
+Output: The script saves a high-resolution figure ''multi_parameter_view.png'' showing the reconstructed maps for both the Northern and Southern Hemispheres.
 
 ### Repository Structure
 
