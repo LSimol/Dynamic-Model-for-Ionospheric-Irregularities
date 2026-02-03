@@ -44,7 +44,7 @@ This script will fetch the dataset (DOI: 10.5281/zenodo.18327152) and extract it
 
 3. **Model Initialisation**
 
-Run the **main processing script** to compute the Spherical Harmonic coefficients for all variables ($N_e$, RODI, $\gamma$). This step generates the .pkl model files used for inference. This run may take several minutes. Enjoy a coffe !
+Run the **main processing script** to compute the Spherical Harmonic coefficients for all variables ($N_e$, RODI, $\gamma$(2)). This step generates the .pkl model files used for inference. This run may take several minutes. Enjoy a coffe !
 
 **Run model**:python main_model.py
 
@@ -71,23 +71,14 @@ Output: The script saves a high-resolution figure ''multi_parameter_view.png'' s
 ### Repository Structure
 
 ├── data/                   # Data storage (populated by download_data.py)
-
 ├── models/                 # Trained Model Coefficients (.pkl)
-
 ├── src/                    # Source Code
-
 │   ├── spha_model.py       # Core logic: Spherical Harmonics & Interpolation
-
 │   ├── visualization.py    # Polar plotting routines (Healpix/Matplotlib)
-
 │   └── config.py           # Physical constants & Grid settings
-
 ├── download_data.py        # Data fetcher
-
 ├── main_model.py           # Training script
-
 ├── example.py              # Inference & Plotting script
-
 └── requirements.txt        # Dependencies
 
  ## Contributions and License
