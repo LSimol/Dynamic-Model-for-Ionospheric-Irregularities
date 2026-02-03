@@ -18,6 +18,7 @@ The model utilizes **Spherical Harmonic Analysis** to reconstruct spatial maps o
 **Conditioning**: Data is binned by:
 
 i) Solar Activity (F10.7 index): Low, Medium, High;
+
 ii) Local Season: Summer, Winter, Equinox;
 
 iii) IMF Clock Angle: 6 sectors ($0^\circ-360^\circ$).
