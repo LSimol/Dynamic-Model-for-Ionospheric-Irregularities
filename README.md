@@ -23,11 +23,11 @@ ii) Local Season: Summer, Winter, Equinox;
 
 iii) IMF Clock Angle: 6 sectors ($0^\circ-360^\circ$).
 
-**Interpolation**: The core innovation of this tool is its ability to linearly interpolate between the spherical harmonic coefficients of adjacent states. This allows the user to generate maps for any specific F10.7 value or Clock Angle, providing a continuous dynamic description rather than just static snapshots..
+**Interpolation**: The core innovation of this tool is its ability to linearly interpolate between the spherical harmonic coefficients of adjacent states. This allows the user to generate maps for any specific F10.7 value or Clock Angle, providing a continuous dynamic description rather than just static snapshots.
 
 ## Usage Guide
 
-1. **Installation**
+**Installation**
 Clone the repository and install the required dependencies:
 
 git clone https://github.com/LSimol/Dynamic-Model-for-Ionospheric-Irregularities.git
@@ -36,15 +36,36 @@ cd Dynamic-Model-for-Ionospheric-Irregularities
 
 pip install -r requirements.txt
 
-2. **Data Availability**
+1. **Option A**: Quick Run and Inference (recommended)
 
-The model relies on **pre-processed Swarm A data grids** (binned by season, solar activity, and clock angle). These files are hosted on Zenodo to keep the repository light.
+The repository comes with pre-trained SPHA coefficients located in the models/ directory. Run the visualization and interpolation immediately without downloading the raw dataset.
+
+To generate the climatological maps, run the example script. It is fully interactive and will prompt you for the desired geophysical conditions.
+
+**Run**: python example.py
+
+**Interactive Prompts**:
+
+Solar Activity: Enter an F10.7 index (e.g., 120).
+
+Clock Angle: Enter the IMF Clock Angle in degrees (e.g., 90 for Eastward IMF).
+
+Season: Choose Summer, Winter, or Equinox.
+
+Resolution: Choose the maximum Spherical Harmonic degree $L$ (e.g., 30 for smoother maps, or press Enter for full resolution).
+
+Output: The script saves a high-resolution figure ''multi_parameter_view.png'' showing the reconstructed maps for both the Northern and Southern Hemispheres.
+
+
+2. **Option B**: Full reproduction
+
+The model relies on **pre-processed Swarm A data grids** (binned by season, solar activity, and clock angle). These files are hosted on Zenodo to keep the repository light. **Warning**: This requires ~65 GB of free disk space. This procedure is suggested if the user wants to better understand the derivation process or change the standard output.
 
 **Download the data automatically**: python download_data.py
 
 This script will fetch the dataset (DOI: 10.5281/zenodo.18327152) and extract it into the data/processed/ directory.
 
-3. **Model Initialisation**
+**Model Initialisation**
 
 Run the **main processing script** to compute the Spherical Harmonic coefficients for all variables ($N_e$, RODI, $\gamma$(2)). This step generates the .pkl model files used for inference. This run may take several minutes. Enjoy a coffe !
 
@@ -52,7 +73,7 @@ Run the **main processing script** to compute the Spherical Harmonic coefficient
 
 Output: models/alm_dict_Ne_Swarm_A.pkl, models/alm_dict_RODI_Swarm_A.pkl, etc.
 
-4. **Visualization**
+**Visualization**
 
 To generate the climatological maps, run the example script. It is fully interactive and will prompt you for the desired geophysical conditions.
 
