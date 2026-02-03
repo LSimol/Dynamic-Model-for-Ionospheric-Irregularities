@@ -67,7 +67,7 @@ The model relies on **pre-processed Swarm A data grids** (binned by season, sola
 
 **Download the data automatically**: python download_data.py
 
-This script will fetch the dataset (DOI: 10.5281/zenodo.18327152) and extract it into the data/processed/ directory.
+This script will fetch the dataset (DOI: 10.5281/zenodo.18327152) and extract it into the data/processed/ directory. This run may take a few hours. 
 
 **Model Initialisation**
 
