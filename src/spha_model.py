@@ -105,7 +105,7 @@ class SPHAModel:
         cln = hp.anafast(hp_map, lmax=self.lmax)
         return alm, cln
 
-def reconstruct_map(self, alm, custom_lmax=None):
+    def reconstruct_map(self, alm, custom_lmax=None):
         """
         Reconstruct map from alm coefficients.
         If custom_lmax is provided, filter out higher-degree coefficients
