@@ -70,16 +70,16 @@ Output: The script saves a high-resolution figure ''multi_parameter_view.png'' s
 
 ### Repository Structure
 
-├── data/                   # Data storage (populated by download_data.py)
-├── models/                 # Trained Model Coefficients (.pkl)
-├── src/                    # Source Code
-│   ├── spha_model.py       # Core logic: Spherical Harmonics & Interpolation
-│   ├── visualization.py    # Polar plotting routines (Healpix/Matplotlib)
-│   └── config.py           # Physical constants & Grid settings
-├── download_data.py        # Data fetcher
-├── main_model.py           # Training script
-├── example.py              # Inference & Plotting script
-└── requirements.txt        # Dependencies
+- ├── data/                   # Data storage (populated by download_data.py)
+- ├── models/                 # Trained Model Coefficients (.pkl)
+- ├── src/                    # Source Code
+- │   ├── spha_model.py       # Core logic: Spherical Harmonics & Interpolation
+- │   ├── visualization.py    # Polar plotting routines (Healpix/Matplotlib)
+- │   └── config.py           # Physical constants & Grid settings
+- ├── download_data.py        # Data fetcher
+- ├── main_model.py           # Training script
+- ├── example.py              # Inference & Plotting script
+- └── requirements.txt        # Dependencies
 
  ## Contributions and License
 Status: This repository is in development phase (v1.0 release). Feel free to contribute by submitting issues, feature requests, or pull requests.
