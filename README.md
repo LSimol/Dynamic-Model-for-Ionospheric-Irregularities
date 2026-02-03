@@ -40,12 +40,17 @@ The model relies on **pre-processed Swarm A data grids** (binned by season, sola
 This script will fetch the dataset (DOI: 10.5281/zenodo.18327152) and extract it into the data/processed/ directory.
 
 3. **Model Initialisation**
+
 Run the **main processing script** to compute the Spherical Harmonic coefficients for all variables ($N_e$, RODI, $\gamma$). This step generates the .pkl model files used for inference.
+
 **Run model**:python main_model.py
+
 Output: models/alm_dict_Ne_Swarm_A.pkl, models/alm_dict_RODI_Swarm_A.pkl, etc.
 
 4. **Visualization**
+
 To generate the climatological maps, run the example script. It is fully interactive and will prompt you for the desired geophysical conditions.
+
 **Run**: python example.py
 
 **Interactive Prompts**:
