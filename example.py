@@ -27,7 +27,7 @@ CA_LEVELS = {
 
 def get_user_inputs():
     print("\n" + "="*60)
-    print("   Dynamic Ionosphere Model - Configuration")
+    print("   Dynamic Model for Ionospheric Irregularities- Configuration")
     print("   (Press ENTER at any prompt to use the Default value)")
     print("="*60)
     
@@ -239,7 +239,7 @@ def main():
     plot_polar_hemisphere(
         maps['Gamma'], hemisphere='North', sub=232, 
         vmin=0.5, vmax=1.5, unit_label='$\\gamma(2)$',
-        title=f'Northern Hemisphere (SA:{SOLAR_ACTIVITY_INPUT}sfu ;CA:{np.degrees(CLOCK_ANGLE_INPUT)}° ;{SEASON_INPUT})'
+        title=f'Northern Hemisphere (SA:{SOLAR_ACTIVITY_INPUT}sfu; CA:{np.degrees(CLOCK_ANGLE_INPUT)}°; {SEASON_INPUT})'
     )
     plot_polar_hemisphere(
         np.log10(rodi_data), hemisphere='North', sub=233, 
