@@ -7,7 +7,7 @@ It specifically models three key parameters:
 2) **Rate of Change of Density Index (RODI)**: Quantitfy **electron density variability** and proxy for the intensity of irregularities;
 3) **Second Order Scaling Exponent ($\gamma$(2))**: serves as a proxy for ionospheric **turbulent regimes**.
 
-Further details regarding the model and its performance can be found in **Mestici et al., 2026 (Accepted)**. Citation details will be updated upon publication.
+Further details regarding the model and its performance can be found in **Mestici et al., 2026**, doi.org/10.1029/2025SW004421.
 
 ## Methodology 
    
